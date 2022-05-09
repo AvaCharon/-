@@ -1,0 +1,62 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface PropFactory
+{
+    + createProp(int locationX,int locationY):AbstractBaseProp
+}
+
+class BulletPropFactory
+{
+    + createProp(int locationX,int locationY):AbstractBaseProp
+}
+
+class BloodReturnPropFactory
+{
+    + createProp(int locationX,int locationY):AbstractBaseProp
+}
+
+class BombPropFactory
+{
+    + createProp(int locationX,int locationY):AbstractBaseProp
+}
+
+class BloodReturnProp{
+    - hpReturn:int
+
+    + BloodReturnProp(int locationX,int locationY,int hpReturn)
+    + getHpReturn():int
+    + effectProp()
+}
+
+class BombProp{
+
+    + BombProp(int locationX,int locationY)
+    + effectProp()
+}
+
+class BulletProp{
+
+    + BulletProp(int locationX,int locationY)
+    + effectProp()
+}
+
+abstract class AbstractBaseProp{
+
+    + AbstractBaseProp(int locationX,int locationY)
+    + effectProp()
+}
+
+PropFactory<|..BloodReturnPropFactory
+PropFactory<|..BombPropFactory
+PropFactory<|..BulletPropFactory
+
+BloodReturnPropFactory..>BloodReturnProp
+BulletPropFactory..>BulletProp
+BombPropFactory..>BombProp
+
+AbstractBaseProp<|--BloodReturnProp
+AbstractBaseProp<|--BombProp
+AbstractBaseProp<|--BulletProp
+
+@enduml

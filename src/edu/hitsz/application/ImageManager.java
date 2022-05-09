@@ -32,7 +32,6 @@ public class ImageManager {
      */
     private static final Map<String, BufferedImage> CLASSNAME_IMAGE_MAP = new HashMap<>();
 
-    public static BufferedImage BACKGROUND_IMAGE;
     public static BufferedImage HERO_IMAGE;
     public static BufferedImage HERO_BULLET_IMAGE;
     public static BufferedImage ENEMY_BULLET_IMAGE;
@@ -45,8 +44,6 @@ public class ImageManager {
 
     static {
         try {
-
-            BACKGROUND_IMAGE = ImageIO.read(new FileInputStream("src/images/bg.jpg"));
 
             HERO_IMAGE = ImageIO.read(new FileInputStream("src/images/hero.png"));
             MOB_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/mob.png"));
@@ -83,6 +80,35 @@ public class ImageManager {
             return null;
         }
         return get(obj.getClass().getName());
+    }
+
+    /**
+     * 根据不同难度选择背景
+     * @param degree游戏难度
+     * @return 背景图片
+     */
+
+    public static BufferedImage getBackgroundImage(String degree){
+        BufferedImage backgroundImage = null;
+        try {
+            switch (degree) {
+                case "Easy":
+                    backgroundImage = ImageIO.read(new FileInputStream("src/images/bg.jpg"));
+                    break;
+                case "Normal":
+                    backgroundImage = ImageIO.read(new FileInputStream("src/images/bg2.jpg"));
+                    break;
+                case "Hard":
+                    backgroundImage = ImageIO.read(new FileInputStream("src/images/bg3.jpg"));
+                    break;
+                default:
+                    backgroundImage = ImageIO.read(new FileInputStream("src/images/bg.jpg"));
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        return backgroundImage;
     }
 
 }

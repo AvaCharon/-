@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+class BombProp{
+    - enemyFlyingObjectList:List<Bomb>
+
+    + addEnemyFlyingObject(EnemyFlyingObject enemyFlyingObject):void
+    + removeEnemyFlyingObject(EnemyFlyingObject enemyFlyingObject):void
+    + notifyAllSubscriber():void
+    + effectProp():void
+}
+
+interface Bomb
+{
+    + update():void
+}
+
+class MobEnemy {
+    + update():void
+}
+
+class EliteEnemy{
+    + update():void
+}
+
+class EnemyBullet{
+    + update():void
+}
+
+BombProp o--> Bomb
+Bomb <|.. MobEnemy
+Bomb <|.. EliteEnemy
+Bomb <|.. EnemyBullet
+
+@enduml

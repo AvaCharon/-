@@ -166,5 +166,9 @@ public abstract class AbstractFlyingObject {
         isValid = false;
     }
 
+    public boolean getIsValid(){
+        return this.isValid;
+    }
+
 }
 

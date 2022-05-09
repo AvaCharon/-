@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface Strategy
+{
+    + shoot(AbstractAircraft abstractAircraft):List<AbstractBaseBullet>
+}
+
+class Collineation
+{
+    + shoot(AbstractAircraft abstractAircraft):List<AbstractBaseBullet>
+}
+
+class Scattering
+{
+    + shoot(AbstractAircraft abstractAircraft):List<AbstractBaseBullet>
+}
+
+abstract AbstractAircraft
+{
+    - shootMode : Strategy
+
+    + setShootMode(Strategy strategy):void
+    + shoot():List<AbstractBaseBullet>:List<AbstractBaseBullet>
+}
+
+Strategy <|.. Scattering
+Strategy <|.. Collineation
+AbstractAircraft *..> Strategy
+
+@enduml

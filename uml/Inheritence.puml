@@ -1,6 +1,29 @@
 @startuml
 'https://plantuml.com/class-diagram
 
+class Main
+{
+    + Main()：void
+}
+
+class Game
+{
+    - enemyAircrafts:List<AbstractAircraft>
+    - heroBullets：List<AbstractBaseBullet>
+    - enemyBullets:List<AbstractBaseBullet>
+    - props:List<AbstractBaseProp>
+
+    + Game():void
+    + action():void
+    - timeCountAndNewCycleJudge()：boolean
+    - shootAction():void
+    - bulletsMoveAction():void
+    - aircraftsMoveAction():void
+    - crashCheckAction():void
+    - postProcessAction():void
+    - dealRankList():void
+}
+
 abstract class AbstractFlyingObject
 {
     # locationX:int
@@ -25,62 +48,63 @@ abstract class AbstractFlyingObject
     + notValid():boolean
     + vanish():void
 }
+
+
 abstract class AbstractAircraft
 {
 	# axHp:int
     # hp:int
+    # power:int
     + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
     + decreaseHp(int decrease):void
     + getHp():int
+    + getPower():int
     + {abstract} shoot():List<Bullet>
  }
 
-class BaseBullet
+abstract class AbstractBaseBullet
 {
     - power:int
-    + BaseBullet(int locationX, int locationY, int speedX, int speedY, int power)
+    + AbstractBaseBullet(int locationX, int locationY, int speedX, int speedY, int power)
     + forward():void
 	+ getPower():int
 }
 
-AbstractFlyingObject <|-- AbstractAircraft
-AbstractFlyingObject <|-- BaseBullet
-AbstractFlyingObject <|-- BaseProp
-
-AbstractAircraft <|-- HeroAircraft
-AbstractAircraft <|-- MobEnemy
-
-MobEnemy<|--EliteEnemy
-MobEnemy<|--BossEnemy
-
-BaseBullet <|-- HeroBullet
-BaseBullet <|-- EnemyBullet
-
-class HeroAircraft {
+class HeroAircraft
+{
+    - heroAircraft:HeroAircraft
     - shootNum:int
     - power:int
     - direction:int
-    + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<Bullet>
+    + getHeroAircraft():HeroAircraft
+}
+
+
+abstract class AbstractEnemyAircraft{
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
     + shoot():List<Bullet>
 }
 
 class MobEnemy {
     + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<Bullet>
 }
 
 class EliteEnemy{
-    # power:int
+    - power:int
 
     + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + dropProp()
 }
 
 class BossEnemy{
-    # power:int
+    - power:int
 
     + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + dropProp()
 }
 
 class HeroBullet {
@@ -93,31 +117,114 @@ class EnemyBullet {
      int speedX, int speedY, int power)
 }
 
-class BaseProp{
+abstract class AbstractBaseProp{
 
     + BaseProp(int locationX,int locationY)
-    + SendNote():void
+    + effectProp()
 }
 
 class BloodReturnProp{
-    # hpReturn:int
+    - hpReturn:int
 
     + BloodReturnProp(int locationX,int locationY,int hpReturn)
     + getHpReturn():int
+    + effectProp()
 }
 
 class BombProp{
 
     + BombProp(int locationX,int locationY)
+    + effectProp()
 }
 
 class BulletProp{
 
     + BulletProp(int locationX,int locationY)
+    + effectProp()
 }
 
-BaseProp<|--BloodReturnProp
-BaseProp<|--BombProp
-BaseProp<|--BulletProp
+interface PropFactory
+{
+    + createProp(int locationX,int locationY):BaseProp
+}
+
+class BulletPropFactory
+{
+    + createProp(int locationX,int locationY):BaseProp
+}
+
+class BloodReturnPropFactory
+{
+    + createProp(int locationX,int locationY):BaseProp
+}
+
+class BombPropFactory
+{
+    + createProp(int locationX,int locationY):BaseProp
+}
+
+interface EnemyFactory
+{
+    + createEnemy():AbstractEnemyAircraft
+}
+
+class MobEnemyFactory
+{
+    + createEnemy():EnemyAircraft
+}
+
+class EliteEnemyFactory
+{
+    + createEnemy():EnemyAircraft
+}
+
+class BossEnemyFactory
+{
+    + createEnemy():EnemyAircraft
+}
+
+Main-->Game#yellow
+Game-->HeroAircraft#yellow
+Game-->AbstractFlyingObject#yellow
+Game-->EnemyFactory#yellow
+Game-->PropFactory#yellow
+
+AbstractFlyingObject <|-- AbstractAircraft
+AbstractFlyingObject <|-- AbstractBaseBullet
+AbstractFlyingObject <|-- AbstractBaseProp
+
+AbstractAircraft <|-- HeroAircraft
+AbstractAircraft <|-- AbstractEnemyAircraft
+
+AbstractEnemyAircraft<|--EliteEnemy
+AbstractEnemyAircraft<|--BossEnemy
+AbstractEnemyAircraft<|--MobEnemy
+
+AbstractBaseBullet <|-- HeroBullet
+AbstractBaseBullet <|-- EnemyBullet
+
+AbstractBaseProp<|--BloodReturnProp
+AbstractBaseProp<|--BombProp
+AbstractBaseProp<|--BulletProp
+
+PropFactory<|..BloodReturnPropFactory#blue
+PropFactory<|..BombPropFactory#blue
+PropFactory<|..BulletPropFactory#blue
+
+BloodReturnPropFactory..>BloodReturnProp#blue
+BulletPropFactory..>BulletProp#blue
+BombPropFactory..>BombProp#blue
+
+EnemyFactory<|..MobEnemyFactory#blue
+EnemyFactory<|..EliteEnemyFactory#blue
+EnemyFactory<|..BossEnemyFactory#blue
+
+MobEnemyFactory..>MobEnemy#blue
+EliteEnemyFactory..>EliteEnemy#blue
+BossEnemyFactory..>BossEnemy#blue
+
+HeroAircraft<--HeroAircraft
+
+
 
 @enduml

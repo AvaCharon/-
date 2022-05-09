@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface UserDao
+{
+    + getAllUsers():List<User>
+    + doAdd(User user):void
+    + doDelete(String userName):void
+}
+
+class UserDaoImpl
+{
+    - users:List<User>
+
+    + UserDaoImpl()
+    + getAllUsers():List<User>
+    + doAdd(User user):void
+    + doDelete(String userName):void
+}
+
+class User
+{
+    - userName: String
+    - score : int
+    - degree : String
+
+    + User(String userName,int score,String degree)
+    + getUserName():String
+    + getScore():int
+    + getDegree():int
+    + setUserName(String userName):void
+    + setScore(int score):void
+    + setDegree(String degree):void
+}
+
+UserDao <|.. UserDaoImpl
+UserDaoImpl <-- User
+
+@enduml

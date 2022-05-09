@@ -1,0 +1,45 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract Game
+{
+    + setBossMaxNumber(int bossMaxNumber):void
+    + setEnemyMaxNumber(int enemyMaxNumber):void
+    + setCycleDuration(int cycleDuration):void
+    + BossPropertyBoost():void
+    + EnemyPropertyBoost():void
+    + action():void
+}
+
+class EasyGame
+{
+    + setBossMaxNumber(int bossMaxNumber):void
+    + setEnemyMaxNumber(int enemyMaxNumber):void
+    + setCycleDuration(int cycleDuration):void
+    + BossPropertyBoost():void
+    + EnemyPropertyBoost():void
+}
+
+class NormalGame
+{
+    + setBossMaxNumber(int bossMaxNumber):void
+    + setEnemyMaxNumber(int enemyMaxNumber):void
+    + setCycleDuration(int cycleDuration):void
+    + BossPropertyBoost():void
+    + EnemyPropertyBoost():void
+}
+
+class HardGame
+{
+    + setBossMaxNumber(int bossMaxNumber):void
+    + setEnemyMaxNumber(int enemyMaxNumber):void
+    + setCycleDuration(int cycleDuration):void
+    + BossPropertyBoost():void
+    + EnemyPropertyBoost():void
+}
+
+Game <|-- EasyGame
+Game <|-- NormalGame
+Game <|-- HardGame
+
+@enduml

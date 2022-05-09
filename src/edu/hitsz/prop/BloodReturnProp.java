@@ -1,14 +1,17 @@
 package edu.hitsz.prop;
 
-public class BloodReturnProp extends BaseProp {
+import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.application.MusicThread;
+
+public class BloodReturnProp extends AbstractBaseProp {
 
     /**
      * 生命值回复量
      */
     private int hpReturn = 20;
 
-    public BloodReturnProp(int locationX,int locationY){
-        super(locationX, locationY);
+    public BloodReturnProp(int locationX,int locationY,int speedY){
+        super(locationX, locationY, speedY);
     }
 
     public int getHpReturn(){
@@ -16,8 +19,10 @@ public class BloodReturnProp extends BaseProp {
     }
 
     @Override
-    public void SendNote(){
+    public void effectProp(boolean isStop){
+        new MusicThread("src/videos/get_supply.wav",isStop,false).start();
         System.out.println("HP RECOVER!");
+        HeroAircraft.getHeroAircraft().decreaseHp(-this.getHpReturn());
         return;
     }
 }
